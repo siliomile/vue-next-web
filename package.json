@@ -27,7 +27,7 @@
     "@element-plus/icons-vue": "^2.3.2",
     "@vueuse/core": "^13.9.0",
     "@wangeditor/editor": "^5.1.23",
-    "@wangeditor/editor-for-vue": "^1.0.2",
+    "@wangeditor/editor-for-vue": "^5.1.13",
     "axios": "^1.8.4",
     "core-js": "^3.41.0",
     "dayjs": "^1.11.13",

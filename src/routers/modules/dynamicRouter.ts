@@ -6,7 +6,7 @@ import { useUserStore } from "@/stores/modules/user"
 import { useAuthStore } from "@/stores/modules/auth"
 
 // 引入 views 文件夹下所有 vue 文件
-const modules = import.meta.glob("@/views/**/*.vue")
+const modules = import.meta.glob("@/pages/**/*.vue")
 
 /**
  * @description 初始化动态路由

@@ -6,7 +6,7 @@ import removeConsole from 'vite-plugin-remove-console'
 import viteCompression from 'vite-plugin-compression'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { resolve } from 'path'
-import dayjs from "dayjs"
+import dayjs from 'dayjs'
 
 export default defineConfig(({ mode }) => {
   const isProd = mode === 'production'
@@ -36,19 +36,19 @@ export default defineConfig(({ mode }) => {
   return {
     plugins,
     resolve: {
-      alias: { '@': resolve(__dirname, 'src') },
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
+      alias: { '@': resolve(__dirname, './src') },
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     },
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "./src/assets/styles/index.scss" as *;`,
+          additionalData: `@use "@/assets/styles/var.scss" as *;`,
         },
       },
     },
     server: {
       port: 8805,
-      host: "0.0.0.0", // 允许通过本机IP 访问
+      host: '0.0.0.0', // 允许通过本机IP 访问
       open: true,
       cors: true,
       proxy: {

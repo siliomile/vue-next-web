@@ -1,10 +1,9 @@
-import { defineStore } from "pinia"
-import { KeepAliveState } from "@/stores/interface"
+import { defineStore } from 'pinia'
+import { KeepAliveState } from '@/stores/interface'
 
-export const useKeepAliveStore = defineStore({
-  id: "geeker-keepAlive",
+export const useKeepAliveStore = defineStore('geeker-keepAlive', {
   state: (): KeepAliveState => ({
-    keepAliveName: []
+    keepAliveName: [],
   }),
   actions: {
     // Add KeepAliveName
@@ -13,11 +12,11 @@ export const useKeepAliveStore = defineStore({
     },
     // Remove KeepAliveName
     async removeKeepAliveName(name: string) {
-      this.keepAliveName = this.keepAliveName.filter(item => item !== name)
+      this.keepAliveName = this.keepAliveName.filter((item) => item !== name)
     },
     // Set KeepAliveName
     async setKeepAliveName(keepAliveName: string[] = []) {
       this.keepAliveName = keepAliveName
-    }
-  }
+    },
+  },
 })

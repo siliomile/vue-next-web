@@ -6,7 +6,7 @@ import { initDynamicRouter } from "@/routers/modules/dynamicRouter"
 import { staticRouter, errorRouter } from "@/routers/modules/staticRouter"
 import NProgress from "@/config/nprogress"
 
-const mode = import.meta.env.VITE_ROUTER_MODE
+const mode = import.meta.env.VITE_ROUTER_MODE || 'history'
 
 const routerMode = {
   hash: () => createWebHashHistory(),
