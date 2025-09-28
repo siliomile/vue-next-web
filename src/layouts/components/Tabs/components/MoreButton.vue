@@ -46,7 +46,7 @@ const globalStore = useGlobalStore();
 const keepAliveStore = useKeepAliveStore();
 
 // refresh current page
-const refreshCurrentPage: Function = inject("refresh") as Function;
+const refreshCurrentPage = inject("refresh") as (showLoading?: boolean) => void;
 const refresh = () => {
   setTimeout(() => {
     route.meta.isKeepAlive && keepAliveStore.removeKeepAliveName(route.fullPath as string);

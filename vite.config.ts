@@ -1,71 +1,28 @@
 import {
   defineConfig,
   loadEnv,
-  type ConfigEnv,
-  type UserConfig,
-  type PluginOption,
-  type ProxyOptions,
 } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import UnoCSS from 'unocss/vite'
-import vueSetupExtend from 'vite-plugin-vue-setup-extend'
-import removeConsole from 'vite-plugin-remove-console'
-import viteCompression from 'vite-plugin-compression'
-import { visualizer } from 'rollup-plugin-visualizer'
+import { wrapperEnv } from './build/getEnv'
+import { createProxy } from './build/proxy'
+import { createVitePlugins } from './build/plugins'
 import { resolve } from 'path'
+import pkg from './package.json'
+import dayjs from 'dayjs'
 
-/**
- * 创建代理，用于解析 .env.development / .env.* 配置
- */
-function createProxy(list: [string, string][] = []) {
-  const ret: Record<string, ProxyOptions> = {}
-  for (const [prefix, target] of list) {
-    const httpsRE = /^https:\/\//
-    const isHttps = httpsRE.test(target)
-
-    ret[prefix] = {
-      target,
-      changeOrigin: true,
-      ws: true,
-      rewrite: (path) => path.replace(new RegExp(`^${prefix}`), ''),
-      ...(isHttps ? { secure: false } : {}),
-    }
-  }
-  return ret
+const { dependencies, devDependencies, name, version } = pkg
+const __APP_INFO__ = {
+  pkg: { dependencies, devDependencies, name, version },
+  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 }
 
-function definedPlugins<T>(plugins: (T | false | null | undefined)[]): T[] {
-  return plugins.filter(Boolean) as T[]
-}
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd())
-  const isProd = mode === 'production'
-  const needAnalyze = process.env.VITE_ANALYZE
+  const root = process.cwd()
+  const env = loadEnv(mode, root)
+  const viteEnv = wrapperEnv(env)
 
-  // 解析 .env 文件中的代理配置
-  // 写法示例：VITE_PROXY=[["/api","http://localhost:3000"],["/foo","https://foo.com"]]
-  const proxyList: [string, string][] = env.VITE_PROXY ? JSON.parse(env.VITE_PROXY) : []
 
-  const plugins = definedPlugins<PluginOption>([
-    vue(),
-    UnoCSS(),
-    vueSetupExtend(),
-
-    // 关键行：先 cast 到 unknown，再 cast 到 PluginOption
-    needAnalyze && (visualizer({ open: true, gzipSize: true }) as unknown as PluginOption),
-    // 仅生产环境去除 console/debugger
-    isProd && removeConsole(),
-
-    // 仅生产环境启用 gzip 压缩
-    isProd &&
-      viteCompression({
-        verbose: false,
-        threshold: 10240,
-        algorithm: 'gzip',
-        ext: '.gz',
-      }),
-  ])
+  const plugins = createVitePlugins(viteEnv)
 
   return {
     plugins,
@@ -81,15 +38,15 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      port: 8805,
+      port: viteEnv.VITE_PORT,
       host: '0.0.0.0',
-      open: true,
+      open: viteEnv.VITE_OPEN,
       cors: true,
-      proxy: createProxy(proxyList), // ✅ 使用 createProxy 动态生成
+      proxy: createProxy(viteEnv.VITE_PROXY), // ✅ 使用 createProxy 动态生成
     },
     build: {
       outDir: 'dist',
-      sourcemap: isProd,
+      sourcemap: viteEnv.VITE_USER_NODE_ENV === 'production',
       minify: 'terser',
       chunkSizeWarningLimit: 1000,
       terserOptions: {
@@ -108,11 +65,8 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    optimizeDeps: {
-      include: ['vue', 'lodash'],
-    },
     define: {
-      __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+      __APP_INFO__: JSON.stringify(__APP_INFO__),
     },
   }
 })
