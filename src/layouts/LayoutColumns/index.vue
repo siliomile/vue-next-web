@@ -3,7 +3,7 @@
   <el-container class="layout">
     <div class="aside-split">
       <div class="logo flx-center">
-        <img class="logo-img" src="@/assets/images/logo.svg" alt="logo" />
+        <!-- <img class="logo-img" src="@/assets/images/logo.svg" alt="logo" /> -->
       </div>
       <el-scrollbar>
         <div class="split-list">
@@ -22,7 +22,7 @@
         </div>
       </el-scrollbar>
     </div>
-    <el-aside :class="{ 'not-aside': !subMenuList.length }" :style="{ width: isCollapse ? '65px' : '210px' }">
+    <el-aside :class="{ 'not-aside': !subMenuList.length }" :style="{ width: isCollapse ? '65px' : '300px' }">
       <div class="logo flx-center">
         <span v-show="subMenuList.length" class="logo-text">{{ isCollapse ? "G" : title }}</span>
       </div>

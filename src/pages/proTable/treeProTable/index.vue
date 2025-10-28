@@ -85,7 +85,7 @@ const getTreeFilter = async () => {
 // 树形筛选切换
 const changeTreeFilter = (val: string) => {
   ElMessage.success("请注意查看请求参数变化 🤔");
-  proTable.value!.pageable.pageNum = 1;
+  proTable.value!.pageable.curPage = 1;
   initParam.departmentId = val;
 };
 

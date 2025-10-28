@@ -29,7 +29,15 @@ export interface GlobalState {
 /* UserState */
 export interface UserState {
   token: string;
-  userInfo: { name: string };
+  deptId: string;
+  userInfo: {
+    username: string;
+    account: any;
+    permissions: string[];
+    roles: any[];
+    depts: any[];
+    companyInfo: Record<string, any>;
+  };
 }
 
 /* tabsMenuProps */
@@ -39,7 +47,7 @@ export interface TabsMenuProps {
   path: string;
   name: string;
   close: boolean;
-  isKeepAlive: boolean;
+  keepAlive: boolean;
 }
 
 /* TabsState */
@@ -59,4 +67,23 @@ export interface AuthState {
 /* KeepAliveState */
 export interface KeepAliveState {
   keepAliveName: string[];
+}
+
+// 定义后端菜单类型
+export interface MenuItem {
+  id: number;
+  parentId: number;
+  name: string;
+  routeName: string;
+  icon?: string;
+  sort?: number;
+  path: string;
+  component?: string;
+  menuType?: string;
+  isHide?: boolean;
+  isFull?: boolean;
+  isAffix?: boolean;
+  enabled?: boolean;
+  keepAlive?: boolean;
+  children?: MenuItem[];
 }

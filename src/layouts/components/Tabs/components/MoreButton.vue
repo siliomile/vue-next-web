@@ -49,10 +49,10 @@ const keepAliveStore = useKeepAliveStore();
 const refreshCurrentPage = inject("refresh") as (showLoading?: boolean) => void;
 const refresh = () => {
   setTimeout(() => {
-    route.meta.isKeepAlive && keepAliveStore.removeKeepAliveName(route.fullPath as string);
+    route.meta.keepAlive && keepAliveStore.removeKeepAliveName(route.fullPath as string);
     refreshCurrentPage(false);
     nextTick(() => {
-      route.meta.isKeepAlive && keepAliveStore.addKeepAliveName(route.fullPath as string);
+      route.meta.keepAlive && keepAliveStore.addKeepAliveName(route.fullPath as string);
       refreshCurrentPage(true);
     });
   }, 0);

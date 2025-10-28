@@ -36,6 +36,7 @@ module.exports = {
     // typeScript (https://typescript-eslint.io/rules)
     "@typescript-eslint/no-unused-vars": "off", // 禁止定义未使用的变量
     "@typescript-eslint/no-unused-expressions": "off", // 禁止定义未使用的变量
+    "@typescript-eslint/no-wrapper-object-types": "off", // 禁止定义未使用的变量
     "@typescript-eslint/no-unsafe-function-type": "warn", // 禁止定义未使用的变量
     "@typescript-eslint/no-empty-function": "error", // 禁止空函数
     "@typescript-eslint/prefer-ts-expect-error": "error", // 禁止使用 @ts-ignore

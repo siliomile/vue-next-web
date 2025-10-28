@@ -1,7 +1,4 @@
-import {
-  defineConfig,
-  loadEnv,
-} from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import { wrapperEnv } from './build/getEnv'
 import { createProxy } from './build/proxy'
 import { createVitePlugins } from './build/plugins'
@@ -15,13 +12,10 @@ const __APP_INFO__ = {
   lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 }
 
-
 export default defineConfig(({ mode }) => {
   const root = process.cwd()
   const env = loadEnv(mode, root)
   const viteEnv = wrapperEnv(env)
-
-
   const plugins = createVitePlugins(viteEnv)
 
   return {
@@ -68,5 +62,6 @@ export default defineConfig(({ mode }) => {
     define: {
       __APP_INFO__: JSON.stringify(__APP_INFO__),
     },
+    base: process.env.NODE_ENV === 'production' ? '/qzkjj' : '/',
   }
 })

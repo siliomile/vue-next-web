@@ -1,13 +1,21 @@
-import { defineStore } from 'pinia'
-import { UserState } from '@/stores/interface'
-import piniaPersistConfig from '@/stores/helper/persist'
+import { defineStore } from "pinia";
+import { UserState } from "@/stores/interface";
+import piniaPersistConfig from "@/stores/helper/persist";
 
 export const useUserStore = defineStore(
-  'geeker-user', // ✅ 第一个参数必须是 id 字符串
+  "sys-user", // ✅ 第一个参数必须是 id 字符串
   {
     state: (): UserState => ({
-      token: '',
-      userInfo: { name: 'Geeker' },
+      token: "",
+      deptId: "",
+      userInfo: {
+        username: "超级管理员",
+        account: "",
+        permissions: [],
+        roles: [],
+        depts: [],
+        companyInfo: {},
+      },
     }),
     getters: {
       // 可选示例
@@ -16,18 +24,28 @@ export const useUserStore = defineStore(
     actions: {
       // 设置 token
       setToken(token: string) {
-        this.token = token
+        this.token = token;
+      },
+      setDeptId(deptId: string) {
+        this.deptId = deptId;
       },
       // 设置 userInfo
-      setUserInfo(userInfo: UserState['userInfo']) {
-        this.userInfo = userInfo
+      setUserInfo(userInfo: UserState["userInfo"]) {
+        this.userInfo = userInfo;
       },
       // 清空用户信息
       resetUser() {
-        this.token = ''
-        this.userInfo = { name: '' }
+        this.token = "";
+        this.userInfo = {
+          username: "",
+          account: "",
+          permissions: [],
+          roles: [],
+          depts: [],
+          companyInfo: {},
+        };
       },
     },
-    persist: piniaPersistConfig('geeker-user'), // ✅ 持久化配置
+    persist: piniaPersistConfig("sys-user"), // ✅ 持久化配置
   },
-)
+);

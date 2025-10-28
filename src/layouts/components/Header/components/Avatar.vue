@@ -5,14 +5,17 @@
     </div>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item @click="openDialog('infoRef')">
-          <el-icon><User /></el-icon>{{ $t("header.personalData") }}
+        <el-dropdown-item v-if="isEnterprise" @click="goto('/user/user-info')">
+          <el-icon> <User /> </el-icon>{{ $t("header.enterprise") }}
         </el-dropdown-item>
-        <el-dropdown-item @click="openDialog('passwordRef')">
-          <el-icon><Edit /></el-icon>{{ $t("header.changePassword") }}
+        <!-- <el-dropdown-item @click="openDialog('infoRef')">
+          <el-icon><User /></el-icon>{{ $t("header.personalData") }}
+        </el-dropdown-item> -->
+        <el-dropdown-item @click="goto('/user/user-info')">
+          <el-icon> <Edit /> </el-icon>{{ $t("header.changePassword") }}
         </el-dropdown-item>
         <el-dropdown-item divided @click="logout">
-          <el-icon><SwitchButton /></el-icon>{{ $t("header.logout") }}
+          <el-icon> <SwitchButton /> </el-icon>{{ $t("header.logout") }}
         </el-dropdown-item>
       </el-dropdown-menu>
     </template>
@@ -24,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { LOGIN_URL } from "@/config";
 import { useRouter } from "vue-router";
 import { logoutApi } from "@/api/modules/login";
@@ -41,7 +44,7 @@ const logout = () => {
   ElMessageBox.confirm("您是否确认退出登录?", "温馨提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
-    type: "warning"
+    type: "warning",
   }).then(async () => {
     // 1.执行退出登录接口
     await logoutApi();
@@ -62,6 +65,14 @@ const openDialog = (ref: string) => {
   if (ref == "infoRef") infoRef.value?.openDialog();
   if (ref == "passwordRef") passwordRef.value?.openDialog();
 };
+
+const goto = (path) => {
+  router.push(path);
+};
+
+const isEnterprise = computed(() => {
+  return !!userStore.userInfo.roles.find((i) => i.name === "企业账号");
+});
 </script>
 
 <style scoped lang="scss">
@@ -71,6 +82,7 @@ const openDialog = (ref: string) => {
   overflow: hidden;
   cursor: pointer;
   border-radius: 50%;
+
   img {
     width: 100%;
     height: 100%;

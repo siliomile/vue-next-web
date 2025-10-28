@@ -7,7 +7,7 @@ import piniaPersistConfig from '@/stores/helper/persist'
 
 const keepAliveStore = useKeepAliveStore()
 
-export const useTabsStore = defineStore('geeker-tabs', {
+export const useTabsStore = defineStore('sys-tabs', {
   state: (): TabsState => ({
     tabsMenuList: [],
   }),
@@ -18,7 +18,7 @@ export const useTabsStore = defineStore('geeker-tabs', {
         this.tabsMenuList.push(tabItem)
       }
       // add keepalive
-      if (!keepAliveStore.keepAliveName.includes(tabItem.name) && tabItem.isKeepAlive) {
+      if (!keepAliveStore.keepAliveName.includes(tabItem.name) && tabItem.keepAlive) {
         keepAliveStore.addKeepAliveName(tabItem.path)
       }
     },
@@ -34,7 +34,7 @@ export const useTabsStore = defineStore('geeker-tabs', {
       }
       // remove keepalive
       const tabItem = this.tabsMenuList.find((item) => item.path === tabPath)
-      tabItem?.isKeepAlive && keepAliveStore.removeKeepAliveName(tabItem.path)
+      tabItem?.keepAlive && keepAliveStore.removeKeepAliveName(tabItem.path)
       // set tabs
       this.tabsMenuList = this.tabsMenuList.filter((item) => item.path !== tabPath)
     },
@@ -49,7 +49,7 @@ export const useTabsStore = defineStore('geeker-tabs', {
         })
       }
       // set keepalive
-      const KeepAliveList = this.tabsMenuList.filter((item) => item.isKeepAlive)
+      const KeepAliveList = this.tabsMenuList.filter((item) => item.keepAlive)
       keepAliveStore.setKeepAliveName(KeepAliveList.map((item) => item.path))
     },
     // Close MultipleTab
@@ -58,7 +58,7 @@ export const useTabsStore = defineStore('geeker-tabs', {
         return item.path === tabsMenuValue || !item.close
       })
       // set keepalive
-      const KeepAliveList = this.tabsMenuList.filter((item) => item.isKeepAlive)
+      const KeepAliveList = this.tabsMenuList.filter((item) => item.keepAlive)
       keepAliveStore.setKeepAliveName(KeepAliveList.map((item) => item.path))
     },
     // Set Tabs
@@ -72,5 +72,5 @@ export const useTabsStore = defineStore('geeker-tabs', {
       })
     },
   },
-  persist: piniaPersistConfig('geeker-tabs'),
+  persist: piniaPersistConfig('sys-tabs'),
 })

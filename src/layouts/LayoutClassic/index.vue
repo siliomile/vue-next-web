@@ -4,7 +4,7 @@
     <el-header>
       <div class="header-lf mask-image">
         <div class="logo flx-center">
-          <img class="logo-img" src="@/assets/images/logo.svg" alt="logo" />
+          <!-- <img class="logo-img" src="@/assets/images/logo.svg" alt="logo" /> -->
           <span class="logo-text">{{ title }}</span>
         </div>
         <ToolBarLeft />
@@ -15,7 +15,7 @@
     </el-header>
     <el-container class="classic-content">
       <el-aside>
-        <div class="aside-box" :style="{ width: isCollapse ? '65px' : '210px' }">
+        <div class="aside-box" :style="{ width: isCollapse ? '65px' : '300px' }">
           <el-scrollbar>
             <el-menu
               :router="false"

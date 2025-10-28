@@ -224,7 +224,7 @@
     {
       prop: 'createTime',
       label: '创建时间',
-      // headerRender,
+      headerRender,
       width: 180,
       search: {
         el: 'date-picker',
