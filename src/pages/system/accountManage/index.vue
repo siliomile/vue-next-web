@@ -60,7 +60,7 @@ import {
   restPassword,
 } from "@/api/modules/system";
 import { useDict } from "@/hooks/useDict";
-const dict = useDict(["custom_status"]);
+const { dict } = useDict(["custom_status"]);
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();

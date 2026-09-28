@@ -43,7 +43,7 @@ import {
   queryDepartmentTree,
 } from "@/api/modules/system";
 import { useDict } from "@/hooks/useDict";
-const dict = useDict(["organ_attribute", "custom_status"]);
+const { dict } = useDict(["organ_attribute", "custom_status"]);
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();

@@ -45,7 +45,7 @@ import { User } from "@/api/interface";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useHandleData } from "@/hooks/useHandleData";
 import { useDownload } from "@/hooks/useDownload";
-import { genderType, userStatus } from "@/utils/dict";
+import DictManager from "@/utils/modules/DictManager";
 import ProTable from "@/components/ProTable/index.vue";
 import TreeFilter from "@/components/TreeFilter/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
@@ -64,6 +64,18 @@ import {
   getUserDepartment,
   getUserRole
 } from "@/api/modules/user";
+
+// 本地 mock 字典（演示用），实际项目中由「字典管理」页面统一维护
+DictManager.set("gender", [
+  { dictLabel: "男", dictValue: 1 },
+  { dictLabel: "女", dictValue: 2 }
+]);
+DictManager.set("user_status", [
+  { dictLabel: "启用", dictValue: 1, colorType: "success" },
+  { dictLabel: "禁用", dictValue: 0, colorType: "danger" }
+]);
+const genderType = DictManager.get("gender").option;
+const userStatus = DictManager.get("user_status").option.map(item => ({ ...item, tagType: (item.raw as any)?.colorType }));
 
 // ProTable 实例
 const proTable = ref<ProTableInstance>();

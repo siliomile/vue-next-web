@@ -38,7 +38,7 @@
 <script setup lang="tsx" name="treeProTable">
 import { onMounted, reactive, ref } from "vue";
 import { User } from "@/api/interface";
-import { genderType } from "@/utils/dict";
+import DictManager from "@/utils/modules/DictManager";
 import { useHandleData } from "@/hooks/useHandleData";
 import { ElMessage, ElNotification } from "element-plus";
 import ProTable from "@/components/ProTable/index.vue";
@@ -88,6 +88,13 @@ const changeTreeFilter = (val: string) => {
   proTable.value!.pageable.curPage = 1;
   initParam.departmentId = val;
 };
+
+// 本地 mock 字典（演示用），实际项目中由「字典管理」页面统一维护
+DictManager.set("gender", [
+  { dictLabel: "男", dictValue: 1 },
+  { dictLabel: "女", dictValue: 2 }
+]);
+const genderType = DictManager.get("gender").option;
 
 // 模拟远程加载性别搜索框数据
 const loading = ref(false);

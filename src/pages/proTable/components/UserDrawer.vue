@@ -32,7 +32,7 @@
       </el-form-item>
       <el-form-item label="性别" prop="gender">
         <el-select v-model="drawerProps.row!.gender" placeholder="请选择性别" clearable>
-          <el-option v-for="item in genderType" :key="item.value" :label="item.label" :value="item.value" />
+          <el-option v-for="item in genderType" :key="String(item.value)" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="身份证号" prop="idCard">
@@ -54,11 +54,18 @@
 
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive } from "vue";
-import { genderType } from "@/utils/dict";
+import DictManager from "@/utils/modules/DictManager";
 import { ElMessage, FormInstance } from "element-plus";
 import { User } from "@/api/interface";
 import UploadImg from "@/components/Upload/Img.vue";
 import UploadImgs from "@/components/Upload/Imgs.vue";
+
+// 本地 mock 字典（演示用），实际项目中由「字典管理」页面统一维护
+DictManager.set("gender", [
+  { dictLabel: "男", dictValue: 1 },
+  { dictLabel: "女", dictValue: 2 }
+]);
+const genderType = DictManager.get("gender").option;
 
 const rules = reactive({
   avatar: [{ required: true, message: "请上传用户头像" }],

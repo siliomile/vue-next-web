@@ -1308,16 +1308,108 @@ export namespace Dict {
     sort?: number;
   }
   export interface ResDictDataDetail {
-    createTime?: Date;
+    createBy?: string;
+    createTime?: string;
     cssClass?: string;
-    dictId: number;
+    dictId?: string | number;
     dictLabel?: string;
     dictValue?: string;
-    id?: number;
-    parentId?: number;
+    id?: string;
+    parentId?: string;
     remark?: string;
     sort?: number;
-    updateTime?: Date;
+    updateBy?: string;
+    updateTime?: string;
+  }
+}
+
+/**
+ * 字典类型相关数据类型（迁移自 party-dues-pc）
+ */
+export namespace SysDictType {
+  export interface Req {
+    id?: number;
+    name: string;
+    type: string;
+    /** 状态：0 开启、1 关闭 */
+    status: number;
+    remark?: string;
+  }
+  export interface Resp extends Req {
+    id: number;
+    createTime?: number;
+  }
+  export interface SimpleResp {
+    id: number;
+    name: string;
+    type: string;
+  }
+}
+
+/**
+ * 字典数据相关数据类型（迁移自 party-dues-pc）
+ */
+export namespace SysDictData {
+  export interface Req {
+    id?: number;
+    sort: number;
+    label: string;
+    value: string;
+    dictType: string;
+    /** 状态：0 开启、1 关闭 */
+    status: number;
+    colorType?: string;
+    cssClass?: string;
+    remark?: string;
+  }
+  export interface Resp extends Req {
+    id: number;
+    createTime?: number;
+  }
+  export interface SimpleResp {
+    dictType: string;
+    value: string;
+    label: string;
+    colorType?: string;
+    cssClass?: string;
+    remark?: string;
+  }
+}
+
+/**
+ * 字典数据相关数据类型（迁移自 party-dues-h5）
+ */
+export namespace DictData {
+  // 服务端返回的原始字典项结构，兼容 dictValue/dictLabel 和 value/label 两种字段命名
+  export interface RawDictItem {
+    dictValue?: string | number | boolean;
+    dictLabel?: string;
+    label?: string;
+    remark?: string;
+    dictRemark?: string;
+    description?: string;
+    desc?: string;
+    range?: string;
+    value?: string | number | boolean;
+    [key: string]: unknown;
+  }
+  // 字典列表/树查询参数
+  export interface DictListParams {
+    dictCode: string;
+    dictValues?: string | number | boolean | Array<string | number | boolean>;
+    [key: string]: unknown;
+  }
+  // 新增字典数据请求参数
+  export interface AddDictDataPayload {
+    sort: number;
+    label: string;
+    value: string | number | boolean;
+    dictType: string;
+    status: number;
+    colorType: string;
+    cssClass: string;
+    remark: string;
+    [key: string]: unknown;
   }
 }
 
