@@ -8,6 +8,9 @@ import NProgress from "@/config/nprogress";
 
 const mode = import.meta.env.VITE_ROUTER_MODE;
 
+// 标记：当次导航是否已重放过（同一导航最多重放一次，避免真实 404 路径触发无限重新初始化）
+let isReplayed = false;
+
 const routerMode = {
   history: () => createWebHistory(import.meta.env.MODE === "production" ? "/qzkjj/" : "/"),
 };
@@ -64,10 +67,16 @@ router.beforeEach(async (to, from, next) => {
   if (!userStore.token) return next({ path: LOGIN_URL, replace: true });
 
   // 6.如果没有菜单列表，就重新请求菜单列表并添加动态路由
-  if (!authStore.authMenuListGet.length) {
+  // 如果当前导航已命中静态通配 404 兜底路由（/:pathMatch(.*)*），说明动态路由尚未注册完成
+  // （Pinia 菜单状态与路由注册状态短暂不一致：刷新、快速连续导航等场景），需要重新初始化动态路由并重放本次导航
+  const hitNotFound = to.matched.some((record) => record.path === "/:pathMatch(.*)*");
+  if ((!authStore.authMenuListGet.length || hitNotFound) && !isReplayed) {
+    isReplayed = true;
     await initDynamicRouter();
     return next({ ...to, replace: true });
   }
+  // 导航成功落到真实业务路由后，重置重放标记，保证后续导航仍可获得一次重放机会
+  if (!hitNotFound) isReplayed = false;
 
   // 7.存储 routerName 做按钮权限筛选
   authStore.setRouteName(to.name as string);
